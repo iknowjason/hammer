@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Network:</strong>
+  <%= @creditcard.network %>
+</p>
+
+<p>
+  <strong>Cardnumber:</strong>
+  <%= @creditcard.cardnumber %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @creditcard.name %>
+</p>
+
+<p>
+  <strong>Address:</strong>
+  <%= @creditcard.address %>
+</p>
+
+<p>
+  <strong>Country:</strong>
+  <%= @creditcard.country %>
+</p>
+
+<p>
+  <strong>Cvv:</strong>
+  <%= @creditcard.cvv %>
+</p>
+
+<p>
+  <strong>Exp:</strong>
+  <%= @creditcard.exp %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @creditcard.user_id %>
+</p>
+
+<%= link_to 'Edit', edit_creditcard_path(@creditcard) %> |
+<%= link_to 'Back', creditcards_path %>

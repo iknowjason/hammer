@@ -1,0 +1,15 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8mb4
+  database: rackvuln_development
+  host: database
+  port: <% ENV['DATABASE_PORT'] %> 
+  username: root 
+  password: railsapp 
+  socket: /var/run/mysqld/mysqld.sock
+
+development:
+  <<: *default
+
+production:
+  <<: *default

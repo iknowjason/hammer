@@ -1,0 +1,25 @@
+version: '3'
+services:
+  webapp:
+    depends_on:
+       - database
+    build: .
+    ports:
+      - "3000:3000"
+    links:
+       - database
+    volumes:
+      - ".:/app"
+      - "./config/docker/database.yml:/app/config/database.yml"
+    environment:
+       RAILS_ENV: development
+       NODE_ENV: development
+       RACK_ENV: development
+    env_file:
+       .env
+  database:
+    image: mariadb
+    environment:
+       MYSQL_ROOT_PASSWORD: railsapp 
+    volumes:
+      - ${PWD}/mariadb:/var/lib/mysql

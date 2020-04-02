@@ -1,0 +1,18 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8mb4
+  host: localhost
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: root 
+  password: <DB_PASSWORD> 
+  socket: /var/run/mysqld/mysqld.sock
+
+development:
+  <<: *default
+  database: rackvuln_development 
+
+production:
+  <<: *default
+  database: rackvuln_production
+  username: <DB_USERNAME> 
+  password: <%= ENV['RACKVULN_DATABASE_PASSWORD'] %>
