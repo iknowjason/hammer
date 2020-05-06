@@ -32,7 +32,7 @@ Create a new user and add them to the rvm group.
 $useradd -m -s /bin/bash -G rvm <username>
   
 Delegate permissions via /etc/sudoers. Edit line in /etc/sudoers to add permissions for that user. For ease of this change, you can simply mirror the same permissions as the root user.
-# User privilege specification
+
 root ALL=(ALL:ALL) ALL
 <username> ALL=(ALL:ALL) ALL
   
