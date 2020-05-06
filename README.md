@@ -212,38 +212,70 @@ Edit /etc/nginx/sites-available/default
 Note:  This repo contains a sample configuration file that you can use.  The file name is 'nginx-example.txt'.  You can copy it over and modify it as you see fit.
 
 Replace the server_name and root directives to match your FQDN and the directory for your rails application. Replace the host and return 301 parameters to match your FQDN. This example below can serve as a template but needs to be modified to match your environment.
+
 upstream app {
+
     server 127.0.0.1:3000;
+    
 }
+
 server {
+
     server_name prod.rtcfingroup.com;
+    
     root /home/rails/hammer/public;
+    
     try_files $uri @app;
+    
     location @app {
+    
     proxy_pass http://app;
+    
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        
         proxy_set_header Host $http_host;
+        
         proxy_redirect off;
+        
     }
     error_page 500 502 503 504 /500.html;
+    
     client_max_body_size 4G;
+    
     keepalive_timeout 10;
+    
     listen 443 ssl;
+    
     if ($scheme != "https") {
+    
         return 301 https://$host$request_uri;
+        
     }
+    
     ssl_certificate <PATH>
+    
     ssl_certificate_key <PATH>
+    
     include <PATH>
+    
     ssl_dhparam <PATH>
+    
 }
+
 server {
+
     if ($host = prod.rtcfingroup.com) {
+    
         return 301 https://$host$request_uri;
+        
     } 
+    
     listen 80;
+    
     server_name prod.rtcfingroup.com
+    
     return 404; 
+    
 }
   
 Step 17: Save the file, re-start nginx service, and verify that it is running
