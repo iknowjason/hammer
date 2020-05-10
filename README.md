@@ -1,7 +1,7 @@
 # README
 
 # Deployment Options
-There are two options to deploy this application.  One is Manual Build Steps and the second is an automated Docker Compose.
+There are two options to deploy this application.  One is **Manual Build Steps** and the second is an automated **Docker Compose**.
 
 For Docker Compose, skip down to the "Docker Compose Steps" section below:
 
@@ -23,6 +23,7 @@ $sudo mysql_secure_installation
 
 Below is a guide showing my script selections when creating this application. Feel free to select as you best see fit to match your own security requirements. Since this is a deliberately insecure application, careful thought should be given for other deployment types requiring better security:
 
+```
 Validate password plugin? No
 
 New Password? <ENTER PASSWORD>
@@ -34,10 +35,12 @@ Disallow root login remotely? Yes
 Remote test database? Yes
 
 Reload privilege tables? Yes
+```
 
   
-Step 2: Install Ruby Version Manager
+**Step 2:** Install Ruby Version Manager
 
+```
 $sudo apt-get install software-properties-common -y
 
 $sudo apt-add-repository -y ppa:rael-gc/rvm
@@ -45,138 +48,175 @@ $sudo apt-add-repository -y ppa:rael-gc/rvm
 $sudo apt-get update
 
 $sudo apt-get install rvm -y
+```
 
 Create a new user and add them to the rvm group. 
 
+```
 $useradd -m -s /bin/bash -G rvm <username>
+```  
   
 Delegate permissions via /etc/sudoers. Edit line in /etc/sudoers to add permissions for that user. For ease of this change, you can simply mirror the same permissions as the root user.
 
+```
 root ALL=(ALL:ALL) ALL
 
 <username> ALL=(ALL:ALL) ALL
-  
+```  
+
 Log in as that user and perform remaining steps while logged in as that user.
 
-Step 3: Install Ruby 2.6.3 using rvm (while logged in as new user)
 
+**Step 3:** Install Ruby 2.6.3 using rvm (while logged in as new user)
+
+```
 $rvm install 2.6.3
+```
 
-Step 4: Clone hammer repo
+**Step 4:** Clone hammer repo
 
+```
 $git clone https://github.com/iknowjason/hammer
+```
 
-Step 5: Edit the database configuration file in config/database.yml.
+**Step 5:** Edit the database configuration file in config/database.yml.
 
 Change the password in the password field for <DB_PASSWORD> to match what you specified for the root password in step 1.
 Run mysql client to connect to MySQL and alter permissions. Specify the same password below in <PASSWORD> that you entered above and in step 1.
-  
+
+```
 $sudo mysql
 
 mysql> ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '<PASSWORD>';
   
 mysql> exit
+```
 
 Verify that you can now authenticate as root. At the prompt enter your root password:
 
+```
 $mysql -u root -p
 
 mysql> exit
+```
 
-Step 6: Populate MySQL DB with rails application data.
+**Step 6:** Populate MySQL DB with rails application data.
 
+```
 $cd /home/<username>/hammer
   
 $rake db:create
 
 $rake db:migrate
-  
-Step 7: Install latest NodeJS.
+```
 
+**Step 7:** Install latest NodeJS.
+
+```
 $curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh
 
 $sudo bash nodesource_setup.sh
 
 $sudo apt install nodejs -y
+```
 
-Step 8: Install the latest yarn and then rebuild the pages for this application instance.
+**Step 8:** Install the latest yarn and then rebuild the pages for this application instance.
 
 Install latest yarn:
 
+```
 $curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 
 $echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 
 $sudo apt update && sudo apt install yarn -y
+```
 
 Run rake commands to compile pages:
 
+```
 $bundle exec rake assets:precompile
 
 $bundle exec rake webpacker:compile
+```
 
-Step 9: Start the app on default port 3000
+**Step 9:** Start the app on default port 3000
 
+```
 $rails s -b 0.0.0.0
+```
 
 Verify that it is working by checking the default page with a browser - URL of http://<IP>:3000. 
   
 Verify that pages are served without any errors.  Tables will show no data.
 
-http://<IP>:3000/users
+**http://<IP>:3000/users**
   
-http://<IP>:3000/creditcards
+**http://<IP>:3000/creditcards**
 
-Step 10: Add simulated user and sensitive credit card data with supplied Python scripts. First, break the  application by inputting <CTRL-C>.
+**Step 10:** Add simulated user and sensitive credit card data with supplied Python scripts. First, break the  application by inputting <CTRL-C>.
   
 Install python modules:
 
+```
 $sudo apt-get install python3-pip -y
 
 $sudo python3 -m pip install Faker
 
 $sudo pip3 install pymysql
+```
 
 In the working directory of the application, change into the python_scripts directory.
 
+```
 $cd /home/<username>/hammer/python_scripts
-  
+```
+
 Edit the gen_users.py and gen_creditdata.py scripts. Change the following variables to match your MySQL DB instance specified in Step 5:
 
+**
 DB_USERNAME
 
 DB_PASSWORD
 
 DB_NAME
+**
 
-Note: If you used the default values in config/database.yml, the DB_NAME should be rackvuln_development.
+**Note:** If you used the default values in config/database.yml, the DB_NAME should be rackvuln_development.
 
 Run both scripts:
 
+```
 $./gen_users.py
 
 $./gen_creditdata.py
+```
 
 Change back into the working directory of the rails application. Launch the app again.
 
+```
 $cd /home/<username>/hammer
   
 $rails s -b 0.0.0.0
+```
 
 Verify with your browser that you can access the /users and /creditcards URLs and this time they render some data!
 
-http://<IP>:3000/users
+**http://<IP>:3000/users***
   
-http://<IP>:3000/creditcards
+**http://<IP>:3000/creditcards**
   
-Step 11: Stop and Consider: At this point, you have a working demo application. For a more production feel of serving up the application with a root CA issued TLS certificate hosted on your domain with an Nginx reverse proxy. Only proceed forward if you have a domain and DNS 'A' record resolving to your site. For this you can easily create a new host with a cloud Linux VPS provider such as Digital Ocean or Linode.  
+**Step 11:** Stop and Consider: At this point, you have a working demo application. For a more production feel of serving up the application with a root CA issued TLS certificate hosted on your domain with an Nginx reverse proxy. Only proceed forward if you have a domain and DNS 'A' record resolving to your site. For this you can easily create a new host with a cloud Linux VPS provider such as Digital Ocean or Linode.  
 
-Step 12: Install Nginx for Reverse Proxy and TLS tunnel termination.
+##Step 12:** Install Nginx for Reverse Proxy and TLS tunnel termination.
 
+```
 $sudo apt install nginx -y
+```
 
-Step 13: Install Lets Encrypt Certbot
+**Step 13:** Install Lets Encrypt Certbot
 
+```
 $sudo add-apt-repository universe
 
 $sudo add-apt-repository ppa:certbot/certbot
@@ -184,8 +224,9 @@ $sudo add-apt-repository ppa:certbot/certbot
 $sudo apt-get update
 
 $sudo apt-get install certbot python-certbot-nginx -y
+```
 
-Step 14: Run certbot to create TLS certificates
+**Step 14:*** Run certbot to create TLS certificates
 
 $sudo certbot --nginx
 
