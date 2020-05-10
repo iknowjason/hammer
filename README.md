@@ -1,14 +1,17 @@
 # README
 
+# Deployment Options
 There are two options to deploy this application.  One is Manual Build Steps and the second is an automated Docker Compose.
 
 For Docker Compose, skip down to the "Docker Compose Steps" section below:
 
-MANUAL BUILD STEPS
-Note:  Tested on Ubuntu Linux 18.04 built on Digital Ocean.
+## Manual Build Steps
 
-Step 1: Install MySQL. These steps were verified on Ubuntu Linux 18.04.
+**Note:**  Tested on Ubuntu Linux 18.04 built on Digital Ocean.
 
+**Step 1:** Install MySQL. These steps were verified on Ubuntu Linux 18.04.
+
+```
 $sudo apt update
 
 $sudo apt install mysql-server mysql-client libmysqlclient-dev -y
@@ -16,6 +19,7 @@ $sudo apt install mysql-server mysql-client libmysqlclient-dev -y
 Run the mysql_secure_installation script.
 
 $sudo mysql_secure_installation
+```
 
 Below is a guide showing my script selections when creating this application. Feel free to select as you best see fit to match your own security requirements. Since this is a deliberately insecure application, careful thought should be given for other deployment types requiring better security:
 
