@@ -174,13 +174,13 @@ $cd /home/<username>/hammer/python_scripts
 
 Edit the gen_users.py and gen_creditdata.py scripts. Change the following variables to match your MySQL DB instance specified in Step 5:
 
-**
-DB_USERNAME
 
-DB_PASSWORD
+**DB_USERNAME**
 
-DB_NAME
-**
+**DB_PASSWORD**
+
+**DB_NAME**
+
 
 **Note:** If you used the default values in config/database.yml, the DB_NAME should be rackvuln_development.
 
@@ -202,13 +202,13 @@ $rails s -b 0.0.0.0
 
 Verify with your browser that you can access the /users and /creditcards URLs and this time they render some data!
 
-**http://<IP>:3000/users***
+**http://<IP>:3000/users**
   
 **http://<IP>:3000/creditcards**
   
 **Step 11:** Stop and Consider: At this point, you have a working demo application. For a more production feel of serving up the application with a root CA issued TLS certificate hosted on your domain with an Nginx reverse proxy. Only proceed forward if you have a domain and DNS 'A' record resolving to your site. For this you can easily create a new host with a cloud Linux VPS provider such as Digital Ocean or Linode.  
 
-##Step 12:** Install Nginx for Reverse Proxy and TLS tunnel termination.
+**Step 12:** Install Nginx for Reverse Proxy and TLS tunnel termination.
 
 ```
 $sudo apt install nginx -y
@@ -228,36 +228,42 @@ $sudo apt-get install certbot python-certbot-nginx -y
 
 **Step 14:*** Run certbot to create TLS certificates
 
+```
 $sudo certbot --nginx
+```
 
 Answer the questions:
 
-Your email address: <ENTER>
+
+**Your email address: <ENTER>**
   
-Agree to terms of service:
+**Agree to terms of service:**
 
-Willing to share your email:
+**Willing to share your email:**
 
-Enter domain name: <HOST.DOMAIN.COM>
+**Enter domain name: <HOST.DOMAIN.COM>**
 
-Note: This step above is important. Ensure that certbot is able to automatically deploy the TLS certificate. 
+**Note:** This step above is important. Ensure that certbot is able to automatically deploy the TLS certificate. 
 
-Re-direct: (I always select '2' for enabling re-direct)
+**Re-direct: (I always select '2' for enabling re-direct)**
 
-Step 15: Re-start and verify nginx
+**Step 15:** Re-start and verify nginx
 
+```
 $sudo service nginx restart
 
 $sudo service nginx status
+```
 
-Step 16: Edit the nginx configuration to configure an Nginx reverse proxy. This will configure Nginx to forward TLS terminated traffic to the Rails Puma app server. The configuration below should be matched to meet your specific environment.
+**Step 16:** Edit the nginx configuration to configure an Nginx reverse proxy. This will configure Nginx to forward TLS terminated traffic to the Rails Puma app server. The configuration below should be matched to meet your specific environment.
 
 Edit /etc/nginx/sites-available/default
 
-Note:  This repo contains a sample configuration file that you can use.  The file name is 'nginx-example.txt'.  You can copy it over and modify it as you see fit.
+**Note:**  This repo contains a sample configuration file that you can use.  The file name is 'nginx-example.txt'.  You can copy it over and modify it as you see fit.
 
 Replace the server_name and root directives to match your FQDN and the directory for your rails application. Replace the host and return 301 parameters to match your FQDN. This example below can serve as a template but needs to be modified to match your environment.
 
+```
 upstream app {
 
     server 127.0.0.1:3000;
@@ -322,47 +328,60 @@ server {
     return 404; 
     
 }
+```
   
-Step 17: Save the file, re-start nginx service, and verify that it is running
+**Step 17:** Save the file, re-start nginx service, and verify that it is running
 
+```
 $sudo service nginx restart
 
 $sudo service nginx status
+```
 
-Step 18: Start the rails app to listen on localhost, port 3000.
+**Step 18:** Start the rails app to listen on localhost, port 3000.
 
+```
 $cd /home/<username>/hammer
   
 $rails s
+```
   
-Step 19: Verify everything is working by browsing to your new FQDN (i.e., https://host.domain.com). Nginx should terminate the TLS connection and re-direct to the Rails Puma app server listening on port 3000!  
+**Step 19:** Verify everything is working by browsing to your new FQDN (i.e., https://host.domain.com). Nginx should terminate the TLS connection and re-direct to the Rails Puma app server listening on port 3000!  
 
-DOCKER COMPOSE STEPS
+##DOCKER COMPOSE STEPS
 
-Note:  Tested on Ubuntu Linux 18.04 built on Digital Ocean.
+**Note:**  Tested on Ubuntu Linux 18.04 built on Digital Ocean.
 
-Step 1: Get docker-compose
+**Step 1:** Get docker-compose
 
+```
 $sudo apt-get update
 
 $sudo apt-get install docker-compose -y
+```
 
-Step 2: Get the repo using git
+**Step 2:** Get the repo using git
 
+```
 $git clone https://github.com/iknowjason/hammer.git
+```
 
-Step 3: Run docker-compose commands to build and bring up the container
+**Step 3:** Run docker-compose commands to build and bring up the container
 
+```
 $cd hammer
 
 $sudo docker-compose build
 
 $sudo docker-compose up
+```
 
-Step 4: If a database error results on the first try, run docker-compose up again.
+**Step 4:** If a database error results on the first try, run docker-compose up again.
 
+```
 $sudo docker-compose up
+```
 
-Step 5: Use a browser to navigate to port 3000 on your host.
+**Step 5:** Use a browser to navigate to port 3000 on your host.
 
 http://<IP>:3000
