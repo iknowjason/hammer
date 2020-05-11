@@ -348,7 +348,7 @@ $rails s
   
 **Step 19:** Verify everything is working by browsing to your new FQDN (i.e., https://host.domain.com). Nginx should terminate the TLS connection and re-direct to the Rails Puma app server listening on port 3000!  
 
-##Docker Compose Steps##
+## Docker Compose Steps
 
 **Note:**  Tested on Ubuntu Linux 18.04 built on Digital Ocean.
 
