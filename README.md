@@ -73,10 +73,12 @@ Log in as that user and perform remaining steps while logged in as that user.
 $rvm install 2.6.3
 ```
 
-**Step 4:** Clone hammer repo
+**Step 4:** Clone hammer repo and run **bundle install**
 
 ```
 $git clone https://github.com/iknowjason/hammer
+$cd hammer
+$bundle install
 ```
 
 **Step 5:** Edit the database configuration file in config/database.yml.
