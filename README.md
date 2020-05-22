@@ -1,4 +1,4 @@
-![](images/Hammer_Logo_S-01.jpg)
+![](images/hammer3.png)
 
 # README
 
