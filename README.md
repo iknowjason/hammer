@@ -1,3 +1,5 @@
+![](images/Hammer_Logo_S-01.jpg)
+
 # README
 
 # Deployment Options
