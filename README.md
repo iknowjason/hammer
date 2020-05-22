@@ -1,4 +1,4 @@
-![](images/hammer3.png)
+![](images/hammer4.png)
 
 # README
 
