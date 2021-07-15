@@ -3,11 +3,15 @@ name: Rails Unit Tests
 on: [push, pull_request]
 
 jobs:
-  test:
+  brakeman:
+    name: runner / brakeman
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Brakeman code scanning
-        uses: standardnotes/brakeman-action@v1.0.0
+      - name: Check out code
+        uses: actions/checkout@v1
+      - name: brakeman
+        uses: reviewdog/action-brakeman@v1
         with:
-          options: "--color -q"
+          brakeman_version: 4.8.2
+          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-review # Default is github-pr-check
